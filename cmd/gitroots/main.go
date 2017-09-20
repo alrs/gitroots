@@ -5,13 +5,18 @@ import (
 	"github.com/alrs/gitroots"
 	"log"
 	"os"
+	"path/filepath"
 )
 
 func main() {
 	if len(os.Args) < 2 {
 		log.Fatal("gitroots requires a root directory as its sole argument")
 	}
-	repos, err := gitroots.Walk(os.Args[1])
+	path, err := filepath.Abs(os.Args[1])
+	if err != nil {
+		log.Fatal(err)
+	}
+	repos, err := gitroots.Walk(path)
 	if err != nil {
 		log.Fatal(err)
 	}
