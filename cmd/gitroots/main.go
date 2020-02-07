@@ -16,6 +16,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	isDir, err := dirTest(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if !isDir {
+		log.Fatalf("%s does not represent a directory", path)
+	}
 	repos, err := gitroots.Walk(path)
 	if err != nil {
 		log.Fatal(err)
@@ -23,4 +30,12 @@ func main() {
 	for r, _ := range repos {
 		fmt.Println(r)
 	}
+}
+
+func dirTest(p string) (bool, error) {
+	fi, err := os.Stat(p)
+	if err != nil {
+		return false, err
+	}
+	return fi.IsDir(), nil
 }
