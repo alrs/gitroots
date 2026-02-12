@@ -14,6 +14,9 @@ type Repos map[string]struct{}
 func walkDirectories(root string) (Repos, error) {
 	repositories := make(Repos)
 	walkFunc := func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
 		args := []string{"rev-parse", "--show-toplevel"}
 		if !info.IsDir() {
 			return nil
